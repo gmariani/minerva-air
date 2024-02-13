@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<application xmlns="http://ns.adobe.com/air/application/3.1">
+    <id>com.coursevector.minerva</id>
+    <versionLabel>3.6.0</versionLabel>
+    <versionNumber>3.6.0</versionNumber>
+    <filename>minerva</filename>
+    <name>Course Vector .minerva</name>
+    
+    <description>Flash debugging tool. Supports reading/writing AS2 and AS3 Local SharedObject (.sol) files. Can also format JavaScript and similar languages.</description>
+    
+    <copyright>Copyright (c) 2013 Course Vector</copyright>
+	
+	<initialWindow>
+		<title>.minerva</title>
+		<content>Minerva.swf</content>
+		<systemChrome>standard</systemChrome>
+		<transparent>false</transparent>
+		<visible>true</visible>
+		<minimizable>true</minimizable>
+		<maximizable>true</maximizable>
+		<resizable>true</resizable>
+	</initialWindow>
+  
+	<icon>
+		<image16x16>assets/icons/clouds_16.png</image16x16>
+		<image32x32>assets/icons/clouds_32.png</image32x32>  
+		<image48x48>assets/icons/clouds_48.png</image48x48> 
+		<image128x128>assets/icons/clouds_128.png</image128x128>
+	</icon>
+	
+	<customUpdateUI>false</customUpdateUI>
+	<allowBrowserInvocation>false</allowBrowserInvocation>
+	<installFolder>Course Vector</installFolder>
+	<programMenuFolder>Course Vector</programMenuFolder>
+	
+	<fileTypes>
+		  <fileType>
+			  <name>Minerva.SharedObject</name>
+			  <extension>sol</extension>
+			  <description>Local SharedObject</description>
+			  <contentType>application/x-amf</contentType>
+			  <icon>
+				    <image16x16>assets/icons/SOL_16.png</image16x16>
+				    <image32x32>assets/icons/SOL_32.png</image32x32>
+				    <image48x48>assets/icons/SOL_48.png</image48x48>
+				    <image128x128>assets/icons/SOL_128.png</image128x128>
+			</icon>
+		</fileType>
+		<fileType>
+			  <name>Minerva.AMF</name>
+			  <extension>amf</extension>
+			  <description>Remoting AMF</description>
+			  <contentType>application/x-amf</contentType>
+			  <icon>
+				    <image16x16>assets/icons/AMF_16.png</image16x16>
+				    <image32x32>assets/icons/AMF_32.png</image32x32>
+				    <image48x48>assets/icons/AMF_48.png</image48x48>
+				    <image128x128>assets/icons/AMF_128.png</image128x128>
+			</icon>
+		</fileType>
+	</fileTypes>
+</application>

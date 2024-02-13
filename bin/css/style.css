@@ -1,0 +1,25 @@
+.TitleTextStyle { 
+    fontFamily: "Myriad";
+    fontWeight: bold;
+    fontSize: 15;    
+}
+
+.NormalTextStyle { 
+    fontFamily: "Myriad";
+    fontWeight: normal;
+    fontSize: 12;    
+}
+
+@font-face {
+	fontFamily: "Myriad";
+	advancedAntiAliasing: true;
+	src:url("../assets/Myriad Web Pro.ttf");
+}
+
+@font-face {
+	fontFamily: "Myriad";
+	fontWeight: bold;
+	fontStyle: bold;
+	advancedAntiAliasing: true;
+	src:url("../assets/MyriadWebPro-Bold.ttf");
+}

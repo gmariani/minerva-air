@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<update xmlns="http://ns.adobe.com/air/framework/update/description/2.5">
+	<versionNumber>3.5.1</versionNumber>
+	<url>http://blog.coursevector.com/downloads/Minerva-3-5-1.air</url>
+	<description><![CDATA[
+	New version includes:
+		* A new online version will be replacing the Adobe AIR version of .minerva. 
+		* Please visit http://apps.coursevector.com/minerva to use this new version.
+	]]></description>
+</update>

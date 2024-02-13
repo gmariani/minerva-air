@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="300" 
+	paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0" 
+	creationComplete="reset()" title="Add Variable">
+	
+	<mx:Script>
+		<![CDATA[
+			[Bindable]
+			private var arrDataTypes:Array = [
+				'Array', 'Boolean', 'ByteArray', 'Date', 
+				'Integer', 'Null', 'Number', 'Object', 
+				'String', 'Undefined', 'XML', 'XMLDocument'
+			];
+			
+			public function reset():void {
+				txtName.text = "";
+				txtName.errorString = "";
+				ddType.selectedIndex = 7;
+			}
+			
+			public function setData(value:Array):void {
+				reset();
+				
+				txtName.text = arr[0];
+				ddType.selectedIndex = arr[1];
+			}
+			
+			public function getData():Array {
+				return [txtName.text, ddType.selectedIndex];
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:StringValidator required="true" source="{txtName}" property="text" minLength="2" />
+	
+	<mx:Form>
+		<mx:FormItem label="Name" width="100%" required="true">
+			<mx:toolTip>Name of the new variable.</mx:toolTip>
+			<mx:TextInput id="txtName" maxChars="255" width="100%" />
+		</mx:FormItem>
+		
+		<mx:FormItem label="Data Type" width="100%" required="true">
+			<mx:toolTip>The data type of the new variable.</mx:toolTip>
+			<mx:ComboBox dataProvider="{arrDataTypes}" selectedIndex="7" id="ddType"></mx:ComboBox>
+		</mx:FormItem>
+	</mx:Form>
+	
+	<mx:HBox width="100%" horizontalAlign="center" height="30">
+		<mx:Button label="Ok"/>
+		<mx:Button label="Cancel"/>
+	</mx:HBox>
+	
+</mx:TitleWindow>

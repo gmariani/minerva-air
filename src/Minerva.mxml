@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:WindowedApplication 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	layout="vertical"
+	showStatusBar="false" 
+	creationComplete="init()" addedToStage="initTracker()" width="790" height="530" verticalGap="0" paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0">
+	
+	<mx:Style source="style/style.css" />
+	
+	<mx:Script source="com/coursevector/minerva/Main.as" />
+	
+	<mx:Fade id="fadeOut" duration="125" alphaFrom="1.0" alphaTo="0.0"/>
+    <mx:Fade id="fadeIn" duration="125" alphaFrom="0.0" alphaTo="1.0"/>
+	
+	<mx:ControlBar width="100%" includeInLayout="true" horizontalAlign="right">
+		<mx:ToggleButtonBar id="tbb"
+			toggleOnClick="true"
+			itemClick="onClickTab(event);" labelField="label" toolTipField="tooltip">
+			<mx:dataProvider>
+				<mx:Object label="AMF Inspector" tooltip="AMF Inspector" />
+				<mx:Object label="Code Beautifier" tooltip="Code Beautifier" />
+			</mx:dataProvider>
+		</mx:ToggleButtonBar>
+		<mx:Spacer width="100%" />
+	
+		<mx:Button label="Open..." click="fileOpen()" includeInLayout="{showOpen}" visible="{showOpen}" icon="@Embed(source='assets/icons/documentOpenIcon.png')" />
+		
+		<mx:Button label="Save" click="fileSave()" includeInLayout="{showSave}" visible="{showSave}" icon="@Embed(source='assets/icons/saveIcon.png')" />
+		<mx:Button label="Save As..." click="fileSaveAs()" includeInLayout="{showSave}" visible="{showSave}" icon="@Embed(source='assets/icons/saveAsIcon.png')" />
+		<mx:Button label="Export JSON" click="fileSaveAsJSON()" includeInLayout="{showSave}" visible="{showSave}" icon="@Embed(source='assets/icons/saveAsIcon.png')" />
+		<mx:Button label="Close" click="fileClose()" includeInLayout="{showSave}" visible="{showSave}" />
+		<mx:Image source="assets/icons/helpIcon.png" click="onClickAbout()" toolTip="About .minerva" autoLoad="true"/>
+	</mx:ControlBar>
+	
+	<mx:ViewStack 
+		id="vsNav"
+		creationPolicy="all" 
+		selectedIndex="0" 
+		width="100%" 
+		height="100%">
+
+		<mx:VBox id="canReader"	label="AMF Inspector" width="100%" height="100%" 
+			paddingLeft="10" paddingBottom="10"	paddingRight="10" paddingTop="10" 
+			hideEffect="{fadeOut}" showEffect="{fadeIn}">
+			
+			<mx:HBox width="100%" verticalAlign="middle">
+				<mx:HBox width="50%" horizontalAlign="left">
+					<mx:Button id="btnInsert" enabled="{hasFile}" toolTip="Insert Item" click="onClickInsert()" label="Insert" labelPlacement="right" />
+					<mx:Button id="btnRemove" enabled="{hasFile}" toolTip="Remove Item" click="onClickRemove()" label="Remove" labelPlacement="right" />
+				</mx:HBox>
+				<mx:HBox width="50%" horizontalAlign="right">
+					<mx:Label text="Sort By" />
+					<mx:ComboBox id="cbSort" change="onChangeSort(event)" selectedIndex="0" editable="false" >
+						<mx:dataProvider>
+							<mx:Object label="Name ASC" data="name-asc" tooltip="Name Ascending" />
+							<mx:Object label="Name DESC" data="name-desc" tooltip="Name Descending" />
+							<mx:Object label="Data Type ASC" data="type-asc" tooltip="Data Type Ascending" />
+							<mx:Object label="Data Type DESC" data="type-desc" tooltip="Data Type Descending" />
+						</mx:dataProvider>
+					</mx:ComboBox>
+					<mx:Button id="btnRefresh" enabled="{hasFile}" toolTip="Reload file" click="onClickRefresh()" label="Refresh" labelPlacement="right" icon="@Embed(source='assets/icons/refresh.png')"/>
+				</mx:HBox>
+			</mx:HBox>
+				
+			<mx:HDividedBox width="100%" height="100%" >
+				<mx:Tree 
+					id="dataTree" 
+					dataTipFunction="treeTip" 
+					showDataTips="true" 
+					editable="{hasFile}" 
+					editorXOffset="25" 
+					editorYOffset="0"
+					doubleClickEnabled="true" 
+					useRollOver="true"
+					itemRollOver="treeOverHandler(event)"
+					itemDoubleClick="treeDoubleClick(event)" 
+					itemEditBegin="treeEditBegin(event)"
+					itemEditBeginning="treeEditBeginning(event)"
+					itemEditEnd="treeEditEnd(event)" 
+					keyDown="treeKeyDown(event)"
+					change="treeChanged(event)" 
+					iconFunction="treeIcon" 
+					labelFunction="treeLabel" 
+					height="100%" 
+					width="75%" />
+				
+				<mx:ViewStack 
+					id="vsType"
+					creationPolicy="all"
+					visible="{showInspector}" 
+					hideEffect="{fadeOut}" 
+					showEffect="{fadeIn}" 
+					width="100%" 
+					height="100%" 
+					paddingBottom="10"
+					paddingRight="10" 
+					paddingTop="10">
+					
+					<mx:Canvas id="EmptyType" >
+						<mx:HBox>
+							<mx:Label text="Data Type" />
+							<mx:ComboBox dataProvider="{arrDataTypes}" selectedIndex="1" id="ddEmptyType" change="treeValueChanged(event, ddEmptyType.selectedLabel, null)"></mx:ComboBox>
+						</mx:HBox>
+					</mx:Canvas>
+					
+					<mx:Canvas id="ObjectType" >
+					</mx:Canvas>
+					
+					<mx:VBox id="NumberType" hideEffect="{fadeOut}" showEffect="{fadeIn}" >
+						<mx:TextInput width="100%" id="numberValueInput" change="treeValueChanged(event, 'invalid', numberValueInput.text)" editable="true" />
+					</mx:VBox>
+					
+					<mx:VBox id="BooleanType" hideEffect="{fadeOut}" showEffect="{fadeIn}">
+						<mx:HBox width="100%">
+							<mx:RadioButton label="True" enabled="true" id="radTrue" groupName="rgBoolean" change="treeValueChanged(event, 'invalid', true)"/>
+							<mx:RadioButton label="False" enabled="true" id="radFalse" groupName="rgBoolean" change="treeValueChanged(event, 'invalid', false)"/>
+						</mx:HBox>
+					</mx:VBox>
+					
+					<mx:VBox id="StringType" hideEffect="{fadeOut}" showEffect="{fadeIn}">
+						<mx:TextArea height="100%" width="100%" id="stringValueInput" editable="true" change="treeValueChanged(event, 'invalid', stringValueInput.text)" />
+					</mx:VBox>
+					
+					<mx:VBox id="ByteArrayType" hideEffect="{fadeOut}" showEffect="{fadeIn}">
+						<mx:HBox width="100%" horizontalGap="7">
+							<mx:Button id="btnInflate" label="Inflate" click="inflateByteArray(event, byteValueInput.text)"/>
+							<mx:Button id="btnDeflate" label="Deflate" click="deflateByteArray(event, byteValueInput.text)"/>
+						</mx:HBox>
+						<mx:VBox height="50%" width="100%">
+							<mx:Label text="Hex Format" />
+							<mx:TextArea id="byteValueInput" width="100%" height="100%" editable="true" change="treeValueChanged(event, 'invalid', byteValueInput.text)" />
+						</mx:VBox>
+						<mx:VBox height="50%" width="100%">
+							<mx:Label text="String Format" />
+							<mx:TextArea id="byteValueDisplay" width="100%" height="100%" color="#999999" editable="false"/>
+						</mx:VBox>
+						
+					</mx:VBox>
+					
+					<mx:VBox id="DateType" hideEffect="{fadeOut}" showEffect="{fadeIn}">
+						<mx:HBox width="100%" horizontalGap="7">
+							<mx:Label text="Date:" />
+							<mx:DateField id="dateDF" change="treeValueChanged(event, 'invalid', dateDF.selectedDate, txtHour.text, txtMin.text, txtSec.text)"/>
+						</mx:HBox>
+						<mx:HBox width="100%">
+							<mx:Label text="Time:" />
+							<mx:TextInput width="25" id="txtHour" maxChars="2" restrict="0123456789" editable="true" textAlign="center" change="treeValueChanged(event, 'invalid', dateDF.selectedDate, txtHour.text, txtMin.text, txtSec.text)"/>
+							<mx:Label text=":" width="10"/>
+							<mx:TextInput width="25" id="txtMin" maxChars="2" restrict="0123456789" editable="true" textAlign="center" change="treeValueChanged(event, 'invalid', dateDF.selectedDate, txtHour.text, txtMin.text, txtSec.text)"/>
+							<mx:Label text=":" width="10"/>
+							<mx:TextInput width="35" id="txtSec" maxChars="3" restrict="0123456789" editable="true" textAlign="right" change="treeValueChanged(event, 'invalid', dateDF.selectedDate, txtHour.text, txtMin.text, txtSec.text)"/>
+						</mx:HBox>
+					</mx:VBox>
+				</mx:ViewStack>
+			</mx:HDividedBox>
+		</mx:VBox>
+		
+		<mx:VBox 
+			id="canCode"
+			label="Code Beautifier" 
+			width="100%" 
+			height="100%"
+			hideEffect="{fadeOut}" 
+			showEffect="{fadeIn}"
+			horizontalAlign="center" 
+			paddingLeft="10" 
+			paddingBottom="10" 
+			paddingRight="10" 
+			paddingTop="10">
+			<mx:HBox width="100%" horizontalAlign="center" verticalAlign="middle">
+				<mx:ComboBox id="ddSize" selectedIndex="3" change="updateConfig()">
+					 <mx:ArrayCollection>
+						 <mx:Object label="Indent with a tab character" data="1"/>
+						 <mx:Object label="Indent with 2 spaces" data="2"/>
+						 <mx:Object label="Indent with 3 spaces" data="3"/>
+						 <mx:Object label="Indent with 4 spaces" data="4"/>
+						 <mx:Object label="Indent with 8 spaces" data="8"/>
+					 </mx:ArrayCollection>
+				</mx:ComboBox>
+				<mx:CheckBox id="cbBraces" label="Braces on own line" change="updateConfig()"/>
+				<mx:CheckBox id="cbPreserve" label="Preserve empty lines?" selected="true" change="updateConfig()"/>
+				<mx:CheckBox id="cbPackers" label="Detect packers?" selected="true" change="updateConfig()"/>
+				<mx:CheckBox id="cbKeepIndentation" label="Keep array indentation?" change="updateConfig()"/>
+			</mx:HBox>
+			<mx:TextArea 
+				width="100%" 
+				height="100%" 
+				textAlign="left" 
+				id="txtCode" 
+				horizontalScrollPolicy="auto" 
+				wordWrap="false" 
+				editable="true" 
+				enabled="true"/>
+			<mx:Button 
+				label="Beautify" 
+				click="formatHandler(event)" 
+				id="btnFormat" width="100%" height="40"/>
+		</mx:VBox>
+	</mx:ViewStack>
+</mx:WindowedApplication>

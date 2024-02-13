@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Window 
+	xmlns:cv="com.coursevector.flex.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	title="About .minerva" 
+	maximizable="false" 
+	minimizable="true" 
+	resizable="false" 
+	layout="vertical" 
+	systemChrome="standard" 
+	width="400" 
+	showStatusBar="false"
+	horizontalAlign="center" 
+	verticalAlign="middle"
+	creationComplete="init()" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" 
+	height="250">
+	
+	<mx:Script>
+          <![CDATA[
+			
+			[Bindable]
+			private var about:String;
+			
+			private function init():void {
+				var appXML:XML = NativeApplication.nativeApplication.applicationDescriptor;
+				var ns:Namespace = appXML.namespace();
+				
+				about = "Version " + appXML.ns::versionLabel + "<br>© 2013 Gabriel Mariani<br><br><a href='http://blog.coursevector.com/minerva'><u>http://blog.coursevector.com/minerva</u></a><br><br>Code beautifier logic is from the 2/8/2011 commit of the awesome <a href='http://jsbeautifier.org/'><u>jsbeautifier.org</u></a>.<br><br>Logic for AMF parsers inspired by <a href='http://www.amfphp.org/'><u>AMFPHP</u></a>.";
+				
+				var mainTrans:Transform = new Transform(DisplayObject(this));
+				var mainPersp:PerspectiveProjection = new PerspectiveProjection();
+				mainPersp.projectionCenter = new Point(emblem.x, emblem.y);
+				mainTrans.perspectiveProjection = mainPersp;
+				this.transform = mainTrans;
+				
+				emblem.rotationY = 0;
+				setInterval(rotateEmblem, 20);
+			}
+			
+			private function rotateEmblem():void {
+				var origWidth:Number = 75;
+				var origHeight:Number = 100;
+				var origX:Number = 15;
+				var origY:Number = 0;
+				var offsetX:Number = (origWidth / 2) + origX;
+                var offsetY:Number = (origHeight / 2) + origY;
+				emblem.transform.matrix3D.appendTranslation(-offsetX, -offsetY, 0);
+				emblem.transform.matrix3D.appendRotation(1, Vector3D.Y_AXIS);
+				emblem.transform.matrix3D.appendTranslation(+offsetX, +offsetY, 0);
+			}
+			
+			private function onClickOk(event:MouseEvent):void {
+				this.close();
+			}
+			
+			private function donate():void {
+				var request:URLRequest = new URLRequest("https://www.paypal.com/cgi-bin/webscr");
+				var vars:URLVariables = new URLVariables();
+				vars.cmd = "_s-xclick";
+				vars.encrypted = "-----BEGIN PKCS7-----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-----END PKCS7-----";
+				request.data = vars;
+				navigateToURL(request);
+			}
+          ]]>
+    </mx:Script>
+     
+	<mx:HBox top="10" left="10" right="10" bottom="40" horizontalGap="0" width="100%" height="100%">
+		<mx:Spacer width="15"/>
+		<cv:SmoothImage source="assets/icons/clouds_128.png" width="75" height="100%" scaleContent="true" autoLoad="true" id="emblem"/>
+		<mx:VBox height="100%" verticalGap="0" width="100%" horizontalAlign="center">
+			<mx:Label text=".minerva" width="100%" textAlign="center"/>
+			<mx:Text width="100%" height="150" htmlText="{about}" textAlign="center" />
+			
+			<mx:Image source="https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif" toolTip="PayPal - The safer, easier way to pay online!" click="donate()" autoLoad="true"/>
+    		<mx:Image autoLoad="true" source="https://www.paypal.com/en_US/i/scr/pixel.gif"/>
+		</mx:VBox>
+	</mx:HBox>
+	<mx:Button id="btnOk" label="Ok" bottom="10" horizontalCenter="0" click="onClickOk(event)"/>
+</mx:Window>

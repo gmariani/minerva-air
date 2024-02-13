@@ -1,0 +1,17 @@
+{
+	"compilerOptions": {
+		"output": "bin/Minerva.swf",
+		"source-path": [
+			"src"
+		],
+		"library-path": [
+			"libs/analytics.swc"
+		]
+	},
+	"files": [
+		"src/Minerva.mxml"
+	],
+	"application": "src/Minerva-app.xml",
+	"copySourcePathAssets": true,
+	"additionalOptions": "-locale en_US -define=CONFIG::debugging,true -show-unused-type-selector-warnings=false"
+}
