@@ -5,3 +5,20 @@
 - Read/Write AS2 Shared Objects - Capable of reading/writing Flash 8 and older .sol files.
 - JSON Import/Export
 
+## Screenshots
+
+![Default UI](/screenshot1.png)
+
+*Default UI*
+
+![About Window](/screenshot2.png)
+
+*About Window*
+
+![Editing AMF/SOL](/screenshot3.png)
+
+*Editing AMF/SOL*
+
+![Formatting JSON](/screenshot4.png)
+
+*Formatting JSON*
